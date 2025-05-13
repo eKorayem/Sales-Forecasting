@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sales Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #1d2b64, #f8cdda);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 94vh;
+        }
+
+        .container {
+            width: 700px;
+            height: 530px;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin: 0 0 25px 0;
+            font-size: 28px;
+        }
+
+        .form-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-rows {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 5px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 95%;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #f57c00;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #e65100;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            min-height: 60px;
+        }
+
+        .result, .error {
+            padding: 12px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+        }
+
+        .result {
+            color: #2e7d32;
+            background-color: #e8f5e9;
+        }
+
+        .error {
+            color: #c62828;
+            background-color: #ffebee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 Sales Prediction</h1>
+        <div class="form-content">
+            <form method="POST">
+                <div class="form-rows">
+                    <div>
+                        <div class="form-group">
+                            <label>Delivery Time (days)</label>
+                            <input type="number" name="delivery_time" value="{{ defaults.delivery_time }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" name="quantity" value="{{ defaults.quantity }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Category (encoded)</label>
+                            <input type="number" name="category" value="{{ defaults.category }}">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>Sub-Category (encoded)</label>
+                            <input type="number" name="sub_category" value="{{ defaults.sub_category }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Discount (%)</label>
+                            <input type="text" name="discount" value="{{ defaults.discount }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Profit ($)</label>
+                            <input type="text" name="profit" value="{{ defaults.profit }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-rows">
+                    <div class="form-group">
+                        <label>Product Popularity</label>
+                        <input type="number" name="popularity" value="{{ defaults.popularity }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Customer Order Count</label>
+                        <input type="number" name="order_count" value="{{ defaults.order_count }}">
+                    </div>
+                </div>
+
+                <button type="submit">Predict Sales</button>
+            </form>
+
+            <div class="result-container">
+                {% if prediction %}
+                    <div class="result">💰 Predicted Sales: {{ prediction }}</div>
+                {% endif %}
+                {% if error %}
+                    <div class="error">{{ error }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
