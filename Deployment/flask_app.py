@@ -3,7 +3,7 @@ import numpy as np
 import pickle
 
 # Load model and scaler
-with open('xgb_model.pkl', 'rb') as model_file:
+with open('rf_model.pkl', 'rb') as model_file:
     xgb = pickle.load(model_file)
 
 with open('scaler.pkl', 'rb') as scaler_file:
@@ -24,8 +24,6 @@ def index():
         "sub_category": 3,
         "discount": "15.0",
         "profit": "50.0",
-        "popularity": 8,
-        "order_count": 2
     }
 
     if request.method == 'POST':
@@ -36,11 +34,9 @@ def index():
             sub_category = int(request.form['sub_category'])
             discount = float(request.form['discount'])
             profit = float(request.form['profit'])
-            popularity = int(request.form['popularity'])
-            order_count = int(request.form['order_count'])
 
             features = np.array([[delivery_time, quantity, category, sub_category,
-                                  discount, profit, popularity, order_count]])
+                                  discount, profit]])
             features_scaled = scaler.transform(features)
             log_sales = xgb.predict(features_scaled)
             actual_sales = np.expm1(log_sales)[0]
@@ -54,8 +50,6 @@ def index():
                 "sub_category": sub_category,
                 "discount": discount,
                 "profit": profit,
-                "popularity": popularity,
-                "order_count": order_count
             })
 
         except ValueError:

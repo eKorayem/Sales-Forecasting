@@ -4,15 +4,15 @@ import numpy as np
 import pickle
 
 # === Load Model and Scaler ===
-with open('xgb_model.pkl', 'rb') as model_file:
-    xgb = pickle.load(model_file)
+with open('rf_model.pkl', 'rb') as model_file:
+    rf = pickle.load(model_file)
 
 with open('scaler.pkl', 'rb') as scaler_file:
     scaler = pickle.load(scaler_file)
 
 # === Main Window Setup ===
 root = tk.Tk()
-root.title("AI Sales Predictor")
+root.title("Sales Predictor")
 root.geometry("850x600")
 root.configure(bg="#f0f8ff")  # Light blue background
 
@@ -47,8 +47,6 @@ labels = [
     ("Sub-Category (encoded)", "3"),
     ("Discount (%)", "10.0"),
     ("Profit ($)", "50.0"),
-    ("Product Popularity", "8"),
-    ("Customer Order Count", "2")
 ]
 
 entries = []
@@ -66,7 +64,7 @@ def predict():
         values = [float(entry.get()) for entry in entries]
         values = np.array([values])
         scaled = scaler.transform(values)
-        log_pred = xgb.predict(scaled)
+        log_pred = rf.predict(scaled)
         actual = np.expm1(log_pred)[0]
         result_label.config(text=f"💰 Predicted Sales: ${actual:,.2f}")
     except Exception as e:
